@@ -1,13 +1,15 @@
-export OUTPUTDIR=preprocessed_original
+#export OUTPUTDIR=preprocessed_original
+export OUTPUTDIR=google/binarized
+export SYSTEM=google
 mkdir -p $OUTPUTDIR
 for LANG in en de; do
-	cp wmt14.en-de.${LANG}.train.bpe $OUTPUTDIR/bpe.train.wmt14.en-de.${LANG}
-	cp wmt14.en-de.${LANG}.dev.bpe $OUTPUTDIR/bpe.dev.wmt14.en-de.${LANG}
-	cp wmt14.en-de.${LANG}.test.bpe $OUTPUTDIR/bpe.test.wmt14.en-de.${LANG}
+	cp ${SYSTEM}/wmt14.en-de.${LANG}.train.${SYSTEM}.bpe ${SYSTEM}/bpe.train.wmt14.en-de.${LANG}
+	cp ${SYSTEM}/wmt14.en-de.${LANG}.dev.${SYSTEM}.bpe ${SYSTEM}/bpe.dev.wmt14.en-de.${LANG}
+	cp ${SYSTEM}/wmt14.en-de.${LANG}.test.${SYSTEM}.bpe ${SYSTEM}/bpe.test.wmt14.en-de.${LANG}
 done
 
 fairseq-preprocess --source-lang en --target-lang de \
-    --trainpref $OUTPUTDIR/bpe.train.wmt14.en-de --validpref $OUTPUTDIR/bpe.dev.wmt14.en-de --testpref $OUTPUTDIR/bpe.test.wmt14.en-de \
+    --trainpref ${SYSTEM}/bpe.train.wmt14.en-de --validpref ${SYSTEM}/bpe.dev.wmt14.en-de --testpref ${SYSTEM}/bpe.test.wmt14.en-de \
     --joined-dictionary \
     --destdir $OUTPUTDIR \
     --workers 32 \
@@ -15,7 +17,7 @@ fairseq-preprocess --source-lang en --target-lang de \
 
 
 for LANG in en de; do
-    rm $OUTPUTDIR/bpe.dev.wmt14.en-de.${LANG}
-    rm $OUTPUTDIR/bpe.train.wmt14.en-de.${LANG}
-    rm $OUTPUTDIR/bpe.test.wmt14.en-de.${LANG}
+    rm ${SYSTEM}/bpe.dev.wmt14.en-de.${LANG}
+    rm ${SYSTEM}/bpe.train.wmt14.en-de.${LANG}
+    rm ${SYSTEM}/bpe.test.wmt14.en-de.${LANG}
 done
