@@ -1,8 +1,4 @@
-source activate torch-xla-0.5 
-export TPU_IP_ADDRESS=10.245.0.2; \
-export XRT_TPU_CONFIG="tpu_worker;0;$TPU_IP_ADDRESS:8470";
-
-python ../../train.py google/binarized/ \
+python /usr/share/torch-xla-0.5/tpu-examples/deps/fairseq/train.py binarized \
   --save-interval=1 \
   --arch=transformer_vaswani_wmt_en_de_big \
   --attention-dropout=0.1 \
@@ -26,11 +22,10 @@ python ../../train.py google/binarized/ \
   --valid-subset=valid \
   --max-epoch=500 \
   --num_cores=8 \
-  --log_steps=100 \
+  --log_steps=1 \
   --input_shapes 512x16 256x32 128x64 64x128 32x256 \
-  --max-target-positions=256 #\
- # --restore-file wmt16.en-de.joined-dict.transformer/model.pt \
- # --reset-dataloader \
- # --reset-optimizer \
- # --reset-lr-scheduler \
- # --reset-meters
+  --max-target-positions=256 \
+  --reset-dataloader \
+  --reset-optimizer \
+  --reset-lr-scheduler \
+  --reset-meters
